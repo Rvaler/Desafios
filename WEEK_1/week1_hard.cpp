@@ -28,36 +28,20 @@ void printMaze() {
 }
 
 void printVisitsResult(){
-	int a = 0, b = 0, c = 0, d = 0, e = 0;
+	int results[5] = {0, 0, 0, 0, 0};
+	
 	for(int k = 0; k < mazeHeight; k++){
 		for(int l = 0; l < mazeWidth; l++){
 			if(newMaze[k+1][l+1] != 1){
-				switch (visitsMaze[k][l]){
-				case 0:
-					a++;
-					break;
-				case 1:
-					b++;
-					break;
-				case 2:
-					c++;
-					break;
-				case 3:
-					d++;
-					break;
-				case 4:
-					e++;
-					break;
-				}
+				results[visitsMaze[k][l]]++;
 			}
 		}
 	}
-	// cout << "RESULTADOS: " << a << " " << b << " " << c << " " << d << " " << e << endl;
-	cout << setfill(' ') << setw(3) << a;
-    cout << setfill(' ') << setw(3) << b;
-    cout << setfill(' ') << setw(3) << c;
-    cout << setfill(' ') << setw(3) << d;
-    cout << setfill(' ') << setw(3) << e << endl;
+	
+	for(int k = 0; k < 5; k++){
+		cout << setfill(' ') << setw(3) << results[k];
+	}
+	cout << endl;
 }
 
 void walkRobot(char currentDirection){
@@ -210,7 +194,6 @@ int main(){
 			}
 		}
 		
-		// printMaze();
 		//set robot in the south west corner turned to east direction
 		currentDirection = 'E';
 		robotColPosition = 1;
@@ -225,26 +208,23 @@ int main(){
         {
             do
             {
-                if (wallOnRight())
+                if (!wallOnRight())
                 {
-                    if (!canMoveForward())
+                    turnRight();
+                }
+                else
+                {
+                	if (!canMoveForward())
                     {
                         turnLeft();
                     }
                 }
-                else
-                {
-                    turnRight();
-                }
             }
             while(!canMoveForward());
-
             walkRobot(currentDirection);
         }
         while (robotLinePosition != mazeHeight || robotColPosition != 1);
         printVisitsResult();
-
-        // printVisitsResult();
 	}
 
 	return 0;
